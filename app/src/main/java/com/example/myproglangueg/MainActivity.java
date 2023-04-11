@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     buttonStart.setText("start learning");
                     addWord.setText("");
                     addTranslation.setText("");
+
                     adapter.notifyDataSetChanged();
                     deleteButton.setVisibility(View.INVISIBLE);
                 }
