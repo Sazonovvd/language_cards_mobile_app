@@ -29,6 +29,7 @@
             android:textSize="24sp" />
 
         <ListView
+            android:id="@+id/my_list_second"
             android:layout_width="match_parent"
             android:layout_height="648dp" />
 
