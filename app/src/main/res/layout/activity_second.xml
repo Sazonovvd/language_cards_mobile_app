@@ -41,6 +41,7 @@
             android:id="@+id/checkButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="btnCheckClick"
             android:text="Check" />
 
         <Button
@@ -49,5 +50,13 @@
             android:layout_height="wrap_content"
             android:onClick="btnStopSecButtonClick"
             android:text="Stop" />
+
+        <TextView
+            android:id="@+id/trueFalseText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="24sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

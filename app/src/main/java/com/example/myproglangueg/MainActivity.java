@@ -1,10 +1,8 @@
 package com.example.myproglangueg;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,10 +10,8 @@ import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     Button addButton;
@@ -26,13 +22,13 @@ public class MainActivity extends AppCompatActivity {
     EditText addTranslation;
     ListView my_list;
 
-    String wordR;
-    String translationR;
+    String wordText;
+    String translationText;
 
     int itemPosition;
     ArrayAdapter adapter;
 
-    ArrayList<String> words = new ArrayList<String>();
+    ArrayList<String> words = new ArrayList<>(); // List of words to learn
 
     FileInputOutputStream fileStream = new FileInputOutputStream(my_list);
 
@@ -63,71 +59,56 @@ public class MainActivity extends AppCompatActivity {
 
         itemPosition = -1;
 
-        my_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String[] splitText = words.get(position).split(" == ");
+        my_list.setOnItemClickListener((parent, view, position, id) -> {
+            String[] splitText = words.get(position).split(" == ");
 
-                addWord.setText(splitText[0].toString());
-                addTranslation.setText(splitText[1].toString());
+            addWord.setText(splitText[0]);
+            addTranslation.setText(splitText[1]);
 
-                wordR = splitText[0];
-                translationR = splitText[1];
+            wordText = splitText[0];
+            translationText = splitText[1];
 
-                itemPosition = position;
-                addButton.setText("Rename");
-                buttonCancel.setVisibility(View.VISIBLE);
-                deleteButton.setVisibility(View.VISIBLE);
-            }
+            itemPosition = position;
+            addButton.setText("Rename");
+            buttonCancel.setVisibility(View.VISIBLE);
+            deleteButton.setVisibility(View.VISIBLE);
         });
-        buttonStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.buttonStart:
-                        Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-                        startActivity(intent);
-                        break;
-                    default:
-                        break;
-                }
+        buttonStart.setOnClickListener(v -> {
+            if (v.getId() == R.id.buttonStart) {
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                intent.putStringArrayListExtra("words", words);
+                startActivity(intent);
             }
         });
 
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                words.add(wordR + " == " + translationR);
+        buttonCancel.setOnClickListener(v -> {
+            words.add(wordText + " == " + translationText);
 
-                words.remove(itemPosition);
+            words.remove(itemPosition);
 
-                addButton.setText("add");
-                addWord.setText("");
-                addTranslation.setText("");
+            addButton.setText("add");
+            addWord.setText("");
+            addTranslation.setText("");
 
-                adapter.notifyDataSetChanged();
-                buttonCancel.setVisibility(View.INVISIBLE);
-                deleteButton.setVisibility(View.INVISIBLE);
-            }
+            adapter.notifyDataSetChanged();
+            buttonCancel.setVisibility(View.INVISIBLE);
+            deleteButton.setVisibility(View.INVISIBLE);
         });
 
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                words.remove(itemPosition);
-                deleteButton.setVisibility(View.INVISIBLE);
-                addButton.setText("add");
-                buttonStart.setText("start learning");
-                addWord.setText("");
-                addTranslation.setText("");
-                adapter.notifyDataSetChanged();
-            }
+        deleteButton.setOnClickListener(v -> {
+            words.remove(itemPosition);
+            deleteButton.setVisibility(View.INVISIBLE);
+            addButton.setText("add");
+            buttonStart.setText("start learning");
+            addWord.setText("");
+            addTranslation.setText("");
+            adapter.notifyDataSetChanged();
         });
     }
 
     public void add(View view) {
         String word = addWord.getText().toString();
-        String translation = addTranslation.getText().toString(); // сделать delete cancel
+        String translation = addTranslation.getText().toString();
         String name = word + " == " + translation;
 
         if (itemPosition > -1) {
@@ -138,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
             buttonStart.setText("start learning");
 
             itemPosition = -1;
-            wordR = "";
-            translationR = "";
+            wordText = "";
+            translationText = "";
         } else {
             words.add(name);
         }

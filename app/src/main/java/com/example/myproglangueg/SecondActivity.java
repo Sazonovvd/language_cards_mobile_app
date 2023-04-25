@@ -1,36 +1,28 @@
 package com.example.myproglangueg;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class SecondActivity extends Activity {
-//    ListView my_list_second;
-//    Adapter adapter;
-//    FileInputOutputStream fileStream = new FileInputOutputStream(my_list_second);
-    int count;
+int count;
     String needCheck;
+    String wordText;
 
     Button stopSecButton;
     Button checkButton;
     EditText secondText;
     TextView firstText;
-    ArrayList<String> words = new ArrayList<String>();
+    TextView trueFalseText;
+    ArrayList<String> words = new ArrayList<>(); // List of items to learn
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,43 +34,33 @@ public class SecondActivity extends Activity {
         checkButton = findViewById(R.id.checkButton);
         firstText = findViewById(R.id.firstText);
         secondText = findViewById(R.id.secondText);
+        trueFalseText = findViewById(R.id.trueFalseText);
 
-        words.add("Hello");
-        words.add("Hi");
-        words.add("Здравствуйте");
-        words.add("Привет");
-//        my_list_second = findViewById(R.id.my_list_second);
-//        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, words_list);
-//        my_list_second.setAdapter((ListAdapter) adapter);
-//
-//        try {
-//            fileStream.read();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        firstText.setText(words.indexOf(count));
+        Intent intent = new Intent();
+        words = intent.getStringArrayListExtra("words");
+
+        String[] splitText = words.get(count).split(" == ");
+
+        wordText = (splitText[0]);
+        needCheck = (splitText[1]);
+        firstText.setText(wordText);
         count++;
     }
 
     public void btnStopSecButtonClick() {
-        stopSecButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SecondActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        stopSecButton.setOnClickListener(v -> {
+            Intent intent = new Intent(SecondActivity.this, MainActivity.class);
+            startActivity(intent);
         });
     }
 
     public void btnCheckClick() {
-        checkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String secCheck = String.valueOf(secondText.getText());
-                needCheck = String.valueOf(firstText.getText());
-                if (secCheck.equals(needCheck)){
-                    firstText.setText("Correct");
-                }
+        checkButton.setOnClickListener(v -> {
+            String secCheck = String.valueOf(secondText.getText());
+            if (secCheck.equals(needCheck)){
+                trueFalseText.setText("Correct");
+            } else {
+                trueFalseText.setText("Incorrect");
             }
         });
     }
