@@ -14,6 +14,7 @@ public class SecondActivity extends Activity {
 int count;
     String needCheck;
     String wordText;
+    String[] splitText;
 
     Button stopSecButton;
     Button checkButton;
@@ -22,7 +23,6 @@ int count;
     TextView trueFalseText;
     ArrayList<String> words = new ArrayList<>(); // List of items to learn
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,11 +38,11 @@ int count;
 
         Intent intent = new Intent();
         words = intent.getStringArrayListExtra("words");
-
-        String[] splitText = words.get(count).split(" == ");
+        splitText = words.get(count+1).split(" == ");
 
         wordText = (splitText[0]);
         needCheck = (splitText[1]);
+
         firstText.setText(wordText);
         count++;
     }
