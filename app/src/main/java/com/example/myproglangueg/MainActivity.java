@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         deleteButton.setVisibility(View.INVISIBLE);
 
         itemPosition = -1;
+        words.add("word 1 == tr1");
+        words.add("word 2 == tr2");
 
         my_list.setOnItemClickListener((parent, view, position, id) -> {
             String[] splitText = words.get(position).split(" == ");
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         });
         buttonStart.setOnClickListener(v -> {
             if (v.getId() == R.id.buttonStart) {
-                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+                Intent intent = new Intent(this, SecondActivity.class);
                 intent.putStringArrayListExtra("words", words);
                 startActivity(intent);
             }
@@ -98,12 +100,13 @@ public class MainActivity extends AppCompatActivity {
 
         deleteButton.setOnClickListener(v -> {
             words.remove(itemPosition);
-            deleteButton.setVisibility(View.INVISIBLE);
             addButton.setText("add");
             buttonStart.setText("start learning");
             addWord.setText("");
             addTranslation.setText("");
             adapter.notifyDataSetChanged();
+            buttonCancel.setVisibility(View.INVISIBLE);
+            deleteButton.setVisibility(View.INVISIBLE);
         });
     }
 
