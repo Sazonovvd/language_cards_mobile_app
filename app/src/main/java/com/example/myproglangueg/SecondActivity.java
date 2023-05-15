@@ -1,5 +1,6 @@
 package com.example.myproglangueg;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,35 +42,36 @@ public class SecondActivity extends Activity {
 
         trueFalseText.setVisibility(View.INVISIBLE);
 
-        //Intent intent = new Intent();
         Bundle arguments = getIntent().getExtras();
         words = (ArrayList<String>) arguments.get("words");
-//        words = arguments.getStringArrayListExtra("words");
         Log.d("TEST_START-CLICK", String.valueOf(words.size()));
     }
 
-    public void btnStopSecButtonClick() {
+    public void btnStopSecButtonClick(View view) {
         stopSecButton.setOnClickListener(v -> {
-            Intent intent = new Intent(SecondActivity.this, MainActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putStringArrayListExtra("words", words);
             startActivity(intent);
         });
     }
 
+    @SuppressLint("SetTextI18n")
     public void btnCheckClick(View view) {
         checkButton.setOnClickListener(v -> {
             String secCheck = String.valueOf(secondText.getText());
             trueFalseText.setVisibility(View.VISIBLE);
             if (secCheck.equals(needCheck)) {
                 trueFalseText.setText("Correct");
-                count++;
             } else {
                 trueFalseText.setText("Incorrect");
             }
         });
     }
 
+    @SuppressLint("SetTextI18n")
     public void btnStartClick(View view) {
         startButton.setOnClickListener(v -> {
+            count++;
             trueFalseText.setVisibility(View.INVISIBLE);
             if (count >= words.size()) {
                 count = 0;

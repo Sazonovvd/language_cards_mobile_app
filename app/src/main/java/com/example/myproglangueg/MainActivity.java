@@ -1,5 +1,6 @@
 package com.example.myproglangueg;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,12 +28,13 @@ public class MainActivity extends AppCompatActivity {
     String translationText;
 
     int itemPosition;
-    ArrayAdapter adapter;
+    ArrayAdapter<String> adapter;
 
     ArrayList<String> words = new ArrayList<>(); // List of words to learn
 
     FileInputOutputStream fileStream = new FileInputOutputStream(my_list);
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,21 +48,21 @@ public class MainActivity extends AppCompatActivity {
         addTranslation = findViewById(R.id.addTranslation);
         my_list = findViewById(R.id.my_list);
 
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, words);
-        my_list.setAdapter(adapter);
-
+        Bundle arguments = getIntent().getExtras();
         try {
-            fileStream.read();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            if (arguments.get("words") != null) {
+                words = (ArrayList<String>) arguments.get("words");
+            }
+        } catch (Exception ignored){}
+        Log.d("TEST_START-CLICK", String.valueOf(words.size()));
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, words);
+        my_list.setAdapter(adapter);
 
         buttonCancel.setVisibility(View.INVISIBLE);
         deleteButton.setVisibility(View.INVISIBLE);
 
         itemPosition = -1;
-        words.add("word 1 == tr1");
-        words.add("word 2 == tr2");
 
         my_list.setOnItemClickListener((parent, view, position, id) -> {
             String[] splitText = words.get(position).split(" == ");
@@ -110,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     public void add(View view) {
         String word = addWord.getText().toString();
         String translation = addTranslation.getText().toString();
