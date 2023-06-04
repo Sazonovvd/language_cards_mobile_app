@@ -142,5 +142,6 @@ public class MainActivity extends AppCompatActivity {
         addTranslation.setText("");
         adapter.notifyDataSetChanged();
         deleteButton.setVisibility(View.INVISIBLE);
+        buttonCancel.setVisibility(View.INVISIBLE);
     }
 }
